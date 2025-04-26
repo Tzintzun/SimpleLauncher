@@ -43,7 +43,7 @@ def download_file(url, destination, retries = 5):
     print(f"No se pudo descargar: {os.path.basename(destination)}")
     return False
 
-def download_json(url, retries=5):
+def download_json(url, retries=5) -> "dict":
     for attemp in range(1, retries):
         try:
             response = requests.get(url, timeout=40)
