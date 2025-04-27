@@ -5,6 +5,7 @@ from model.asset_index import AssetIndex
 from model.library import Library
 from model.downloads import Downloads
 from model.argument import Rule
+from model.java_version import JavaVersion
 
 ##Correir nombres de atributos y agregar .get a Optionals
 
@@ -14,14 +15,14 @@ class Version:
     assets: str
     assetIndex: Optional[AssetIndex]
     downloads: Optional[Downloads]
-    javaVersion: Optional[Dict]
+    javaVersion: Optional[JavaVersion]
     complianceLevel: int
     libraries: Optional[List[Library]]
     logging: Optional[Dict]
     mainClass: str
     type_version: str
-    game_arguments: Optional[List]
-    java_arguments: Optional[List]
+    game_arguments: Optional[List[str | Rule]]
+    java_arguments: Optional[List[str | Rule]]
 
     @staticmethod
     def from_dict(data:dict) -> "Version":
@@ -32,6 +33,9 @@ class Version:
                           for argument in data["arguments"]["game"]]
         java_arguments = [Rule.from_dict(argument) if isinstance(argument, dict) else argument
                           for argument in data["arguments"]["jvm"]]
+        
+        java_version_data= data.get("javaVersion")
+        java_version = JavaVersion.from_dict(java_version_data) if java_version_data else None
         return Version(
             id = data["id"],
             assets= data["assets"],
