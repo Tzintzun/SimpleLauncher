@@ -20,7 +20,7 @@ def import_file_json(dir):
     except Exception as e:
         print(f"Error inesperado: {e}")
 
-def download_file(url, destination, retries = 5):
+def download_file(url:str, destination:str, retries = 5):
     for attem in range(1, retries):
         try:
             response = requests.get(url, timeout=40)

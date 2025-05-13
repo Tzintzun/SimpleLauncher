@@ -1,7 +1,11 @@
+import os
 from dataclasses import dataclass, field
 from typing import Optional, Dict
-from utils.files import download_json
+from services.download_service import download_json, download_file
 
+
+
+ASSETS_URL = "https://resources.download.minecraft.net"
 
 @dataclass
 class AssetObject:
@@ -59,3 +63,51 @@ class AssetIndex:
             key: AssetObject(**value)
             for key, value in data_objects["objects"].items()
         }
+
+    def fetch_assets(self, game_dir: str) -> bool:
+
+        """
+        Descarga los assets del juego en una ruta especificada.
+        Args:
+            game_dir (str): Directorio de instalacion del juego.
+        Returns:
+            bool: True si los assets se descargaron correctamente, False si hubo un problema al descargar los assets.
+        """
+        
+        assetIndex_full_path = os.path.join(self.game_dir, "assets", "indexes", f"{self.id}.json")
+        if(os.path.exists(assetIndex_full_path)):
+            print("Recursos descargados previamente")
+            return True
+        
+        for asset  in self.objects:
+            asset_hash = self.objects[asset].hash if self.objects[asset] else ""
+            if not asset_hash:
+                print(f"No se encontro el asset: {asset}")
+                return False
+            sub_hash = self.objects[asset].hash[0:2]
+            asset_full_path = os.path.join(game_dir, "assets", "objects", sub_hash, asset_hash)
+
+            try:
+                os.makedirs(os.path.dirname(asset_full_path), exist_ok=True)
+            except OSError as directory_error:
+                print(f"No se pudo crear la ruta {os.path.dirname(asset_full_path)}: {directory_error}")
+                return False
+            
+            asset_url = f"{ASSETS_URL}/{sub_hash}/{asset_hash}"
+
+            if not download_file(asset_url, asset_full_path):
+                print(f"No se pudo descargar el asset {asset}")
+                return False
+        
+        try:
+            os.makedirs(os.path.dirname(assetIndex_full_path), exist_ok=True)
+        except OSError as directory_error:
+            print(f"No se pudo crear la ruta {os.path.dirname(assetIndex_full_path)}: {directory_error}")
+            return False
+        
+        if not download_file(self.url, assetIndex_full_path):
+            return False
+
+        print("Recursos descargados correctamente")
+        return True
+            

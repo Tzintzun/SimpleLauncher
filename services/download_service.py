@@ -5,6 +5,10 @@ import time
 import hashlib
 from  pathlib import Path
 
+"""
+Funciones para la descarga, almacenamiento, lectura y comprobacion de archivos,
+"""
+
 def download_file(url: str, destination: Path, retries = 5) -> "bool":
     """
     Descarga un archivo y lo almacena.
