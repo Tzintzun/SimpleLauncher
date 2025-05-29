@@ -1,3 +1,4 @@
+import configparser
 from model.version_manifests import VersionManifest
 from model.version import Version
 from model.library import Library
@@ -14,10 +15,11 @@ def fetch_version_manifest() -> "VersionManifest | None":
     Returns:
         VersionManifest: Objeto que contiene los datos de las versiones.
     """
-    version_manifest = download_json(get_version_manifest_url())
+    version_manifest_url = get_version_manifest_url()
+    version_manifest = download_json(version_manifest)
 
     if version_manifest is None:
-        print(f"No se pudo obtener el Manifiesto de versiones de: {VERSIONS_MANIFEST_URL}")
+        print(f"No se pudo obtener el Manifiesto de versiones de: {version_manifest}")
         return None
     
     return VersionManifest.form_dict(version_manifest)
