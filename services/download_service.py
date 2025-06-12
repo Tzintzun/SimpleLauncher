@@ -1,3 +1,6 @@
+"""
+Funciones para la descarga, almacenamiento, lectura y comprobacion de archivos.
+"""
 import json
 import requests
 import os
@@ -5,9 +8,9 @@ import time
 import hashlib
 from  pathlib import Path
 
-"""
-Funciones para la descarga, almacenamiento, lectura y comprobacion de archivos,
-"""
+__docformat__ = "Google-style"
+
+
 
 def download_file(url: str, destination: Path, retries = 5) -> "bool":
     """
@@ -64,7 +67,7 @@ def download_json(url: str, retries: int =5) -> "dict | None":
     print(f"No se pudo obtener la informacion de: {url}")
     return None
 
-def safe_json(full_path: Path, json_data:dict) -> "bool":
+def save_json(full_path: Path, json_data:dict) -> "bool":
     """
     Almacena un diccionario, en formato JSON, en un archivo.
     

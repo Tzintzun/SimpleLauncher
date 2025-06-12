@@ -1,35 +1,34 @@
 import os
-from dataclasses import dataclass, field
+from pathlib import Path
+from dataclasses import dataclass
 from typing import Optional, Dict, List
 
 from services.download_service import download_file
 
+__docformat__ = "Google-style"
 
 @dataclass
 class LibraryDownloads:
     """
     Contiene la informacion de descarga de la libreria.
-    Attributes:
-        artifact (Optional[Dict]): Contiene el path, sha1, tamaño y url de descarga de la libreria.
-        classifiers (Optional[Dict]): Se usa en versiones viejas (no implementado)
     """
     artifact: Optional[Dict]
+    """Contiene el path, sha1, tamaño y url de descarga de la libreria."""
     classifiers: Optional[Dict]
+    """ Se usa en versiones viejas (no implementado)"""
 
 @dataclass
 class Library:
     """
     Informacion de una libreria utilizada por el juego.
-    Attributes:
-        name (str): Nombre la libreria
-        downloads (Optional[LibraryDownloads]):
-        rules (Optional[List[Dict]]): Reglas para usar la libreria
-        natives (Optional[Dict]):Se usa en versiones antiguas de Minecraft (no implementado.)
     """
     name: str
+    """Nombre la libreria"""
     downloads: Optional[LibraryDownloads]
     rules: Optional[List[Dict]]
+    """Reglas para usar la libreria"""
     natives: Optional[Dict]
+    """Se usa en versiones antiguas de Minecraft (no implementado.)"""
 
     @staticmethod
     def from_dict(data:dict) -> "Library":
@@ -37,9 +36,11 @@ class Library:
         Obtiene un Library apartir de un diccionario.
 
         Args:
+
             data (dict):
 
         Returns:
+
             Library:
         """
         downloads_data = data.get("downloads")
@@ -56,14 +57,20 @@ class Library:
         )
     
 
-    def fetch_library(self, game_dir:str)-> bool:
+    def fetch_library(self, game_dir: Path)-> bool:
         """
         Descarga la libreria.
+
         Args:
+
             game_dir (str): Directorio de instalacion de la version.
+
         Returns:
+
             bool: true si la libreria se descargo correctamte, de lo contrario False.
         """
+        if not isinstance(game_dir, (Path, str) ):
+            raise TypeError("game_dir tiene que ser Path o str.")
         if not self.downloads.artifact:
             return True
         

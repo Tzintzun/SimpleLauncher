@@ -1,27 +1,28 @@
 from dataclasses import dataclass, field
 from typing import Optional, Dict, List
 
+__docformat__ = "Google-style"
 
 @dataclass
 class Rule:
     """
     Regla de configuración para lanzar el juego.
-    Attributes:
-        rule (Optional[List[Dict]]): Lista de diccionarios que contiene la regla.
-        value (List[str]): Valor en caso de que la regla se cumpla.
     """
     rule: Optional[List[Dict]]
+    """Lista de reglas"""
     value: List[str] = field(default_factory=list)
+    """Lista de valores para las reglas"""
 
     @staticmethod
     def from_dict(rule_info: dict)-> "Rule":
         """
         Convierte un diccionario en Rule.
+
         Args:
             reule_info (dict):
         
         Returns:
-            Rule:
+            Rule
         """
         return Rule(
             rule=rule_info.get("rules", []),

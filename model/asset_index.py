@@ -1,35 +1,36 @@
 import os
-from dataclasses import dataclass, field
+from pathlib import Path
+from dataclasses import dataclass
 from typing import Optional, Dict
 from services.download_service import download_json, download_file
 
-
-
-ASSETS_URL = "https://resources.download.minecraft.net"
+__docformat__ = "Google-style"
 
 @dataclass
 class AssetObject:
+    """Contiene la informacion de un asset"""
     hash: str
+    """nombre del asset"""
     size: int
+    """tamaño del asset"""
 
 @dataclass
 class AssetIndex:
     """
-    Contiene la informacion de los Assets de una version de Minecraft
-    Attributes:
-        id (str): Indice de los Assets
-        sha1 (str): Hash de la lista de Assets
-        size (int): Tamaño de archivo json que contiene los Assets
-        total_size (int): Tamaño total de los Assets
-        url (str): Direccion de descarga del JSON
-        objects (dict): Diccionario que contiene el nombre del Asset (Key) y la informacion del Asset(AssetObject)  
+    Contiene la informacion de los Assets de una version de Minecraft  
     """
     id: str
+    """Indice de los Assets"""
     sha1: str
+    """Hash de la lista de Assets"""
     size: int
+    """Tamaño de archivo json que contiene los Assets"""
     total_size: int
+    """Tamaño total de los Assets"""  
     url: str
-    objects: Optional[Dict[str, AssetObject]] = None
+    """Direccion de descarga del JSON"""
+    objects: Optional[Dict[str, AssetObject]]
+    """Diccionario que contiene el nombre del Asset (Key) y la informacion del Asset(AssetObject)"""
 
     @staticmethod
     def from_dict(data:dict) ->"AssetIndex":
@@ -37,9 +38,11 @@ class AssetIndex:
         Crea un AssetIndex a partir de un diccionario
         
         Args:
+
             data (dict): Informacion del assetIndex
         
         Returns:
+
             AssetIndex: Objeto con la infacion de los assets
         
         """
@@ -48,14 +51,16 @@ class AssetIndex:
             sha1=data["sha1"],
             size=data["size"],
             total_size= data["totalSize"],
-            url=data["url"]
+            url=data["url"],
+            objects= None
         )
     
-    def fetch_objects(self):
+    def fetch_objects(self) -> bool:
         """
         Descarga la informacion de los Assets
         """
         data_objects = download_json(self.url)
+        print(data_objects)
         if data_objects is None:
             return False
         
@@ -63,18 +68,24 @@ class AssetIndex:
             key: AssetObject(**value)
             for key, value in data_objects["objects"].items()
         }
+        return True
 
-    def fetch_assets(self, game_dir: str) -> bool:
+    def fetch_assets(self, game_dir: Path) -> bool:
 
         """
         Descarga los assets del juego en una ruta especificada.
+
         Args:
+
             game_dir (str): Directorio de instalacion del juego.
+
         Returns:
+
             bool: True si los assets se descargaron correctamente, False si hubo un problema al descargar los assets.
         """
-        
-        assetIndex_full_path = os.path.join(self.game_dir, "assets", "indexes", f"{self.id}.json")
+        if not isinstance(game_dir, (Path, str) ):
+            raise TypeError("game_dir tiene que ser Path o str.")
+        assetIndex_full_path = os.path.join(game_dir, "assets", "indexes", f"{self.id}.json")
         if(os.path.exists(assetIndex_full_path)):
             print("Recursos descargados previamente")
             return True
