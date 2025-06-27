@@ -2,12 +2,12 @@
 
 Este launcher está enfocado en permitir a los usuarios ejecutar e instalar distintas versiones de Minecraft de manera simple.
 
-- [Requisitos](##requisitos)
-- [Configuración](##configuración)
-- [Ejecución](##ejecución)
-- [Consideraciones](##consideraciones:)
-- [Trabajo en proceso](##trabajo-en-proceso:)
-- [Trabajo a futuro](##trabajo-a-futuro:)
+- [Requisitos](#requisitos)
+- [Configuración](#configuración)
+- [Ejecución](#ejecución)
+- [Consideraciones](#consideraciones)
+- [Trabajo en proceso](#trabajo-en-proceso)
+- [Trabajo a futuro](#trabajo-a-futuro)
 ## Requisitos
 - Python 3.13
 - PySide6
@@ -64,17 +64,17 @@ Ahora simplemente ejecutamos `SimpleLauncherUi.py`
 python SimpleLauncherUi.py
 ```
 
-## Consideraciones:
+## Consideraciones
 - Debido a cambios en el manifiesto de cada versión, el launcher solo puede descargar y ejecutar versiones posteriores a la `1.13.x`
 - Solo es capaz de ejecutar versiones vanilla del juego. 
 - El botón de `Verificar` aun no está implementado.
 
-## Trabajo en proceso:
+## Trabajo en proceso
 - Soporte para todas las versiones vanilla del juego.
 - Comprobación del Hash del archivo al descargar.
 - Implementación del verificacion de archivos para las versiones instaladas.
 - Implementación de carpeta de configuracion.
 - Empaquetado y distribución del launcher.
 
-## Trabajo a futuro:
+## Trabajo a futuro
 - Agregar soporte para ejecutar versiones Forge y Fabric.
