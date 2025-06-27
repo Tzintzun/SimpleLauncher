@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import Optional, Dict
 from services.download_service import download_json, download_file
 
+ASSETS_URL = "https://resources.download.minecraft.net"
+
 __docformat__ = "Google-style"
 
 @dataclass

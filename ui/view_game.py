@@ -3,14 +3,10 @@ from PySide6.QtWidgets import (QVBoxLayout,
                                QFormLayout,
                                QLineEdit, 
                                QPushButton,
-                               QTextBrowser,
                                QWidget,
                                QComboBox,
-                               QMessageBox,
-                               QRadioButton,
-                               QButtonGroup)
-from PySide6.QtCore import Qt, QUrl
-from PySide6.QtGui import QDesktopServices
+                               QMessageBox,)
+from PySide6.QtCore import Qt
 from launcher import config
 from launcher import core
 

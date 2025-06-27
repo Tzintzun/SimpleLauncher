@@ -104,10 +104,8 @@ def get_installed_versions(game_dir: Path) -> Optional[List[Version]]:
         content = os.listdir(versions_dir)
         for item in content:
             version_data_path = versions_dir/item/ f"{item}.json"
-            print(version_data_path)
             if version_data_path.exists():
                 version_client = versions_dir/item/ f"{item}.jar"
-                print(version_client)
                 if version_client.exists():
                     version_data = load_json(version_data_path)
                     if version_data is not None:

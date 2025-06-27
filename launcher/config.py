@@ -11,7 +11,7 @@ from pathlib import Path
 def get_base_path():
     if getattr(sys, "frozen", False):
         return Path(sys._MEIPASS)
-    return Path(__file__).parent
+    return Path(sys.argv[0]).resolve().parent
 
 
 _config = configparser.ConfigParser()
